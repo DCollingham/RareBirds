@@ -9,12 +9,12 @@ namespace RareBirdsApi.Models
         {
         }
         public DbSet<Bird> Birds {get;set;}
-
+        public DbSet<Sighting> Sightings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new BirdConfiguration());
-
+            modelBuilder.ApplyConfiguration(new SightingConfiguration());
         }
     }
 }

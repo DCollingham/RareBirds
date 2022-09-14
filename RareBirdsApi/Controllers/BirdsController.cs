@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RareBirdsApi.Models;
+using RareBirdsApi.Models.DTOs;
 
 namespace RareBirdsApi.Controllers
 {
@@ -14,38 +16,45 @@ namespace RareBirdsApi.Controllers
     public class BirdsController : ControllerBase
     {
         private readonly RareBirdsDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BirdsController(RareBirdsDbContext context)
+        public BirdsController(RareBirdsDbContext context, IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         // GET: api/Birds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bird>>> GetBirds()
+        public async Task<ActionResult<IEnumerable<GETBirdsDTO>>> GetBirds()
         {
           if (_context.Birds == null)
           {
               return NotFound();
           }
-            return await _context.Birds.ToListAsync();
+           var birds = await _context.Birds.ToListAsync();
+           return _mapper.Map<List<GETBirdsDTO>>(birds);
+
         }
 
         // GET: api/Birds/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bird>> GetBird(int id)
+        public async Task<ActionResult<GETBirdDetailsDTO>> GetBird(int id)
         {
           if (_context.Birds == null)
           {
               return NotFound();
           }
-            var bird = await _context.Birds.FindAsync(id);
+            var bird = await _context.Birds.Include(q => q.Sightings)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
 
             if (bird == null)
             {
                 return NotFound();
             }
-            return bird;
+            var BirdDTO = _mapper.Map<GETBirdDetailsDTO>(bird);
+            return BirdDTO;
         }
 
         // GET: api/Birds/genus/Perdix

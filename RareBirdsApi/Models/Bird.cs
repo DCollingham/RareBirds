@@ -12,5 +12,6 @@ namespace RareBirdsApi.Models
         
         [Column(TypeName = "nvarchar(24)")]
         public Rarity Rarity { get; set; }
+        public virtual IList<Sighting>? Sightings { get; set; }
     }
 }
