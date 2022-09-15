@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using RareBirdsApi.Models;
+using RareBirdsApi.Data.Models;
 using RareBirdsApi.Models.DTOs;
 
 namespace RareBirdsApi.Configs
@@ -8,9 +8,14 @@ namespace RareBirdsApi.Configs
     {
         public MapperConfig()
         {
-            CreateMap<Bird, GETBirdDetailsDTO>().ReverseMap();
-            CreateMap<Bird, GETBirdsDTO>().ReverseMap();
+            CreateMap<Bird, GetBirdDetailsDTO>().ReverseMap();
+            CreateMap<Bird, GetBirdsDTO>().ReverseMap();
+            CreateMap<Bird, PostBirdDTO>().ReverseMap();
+            CreateMap<Bird, GetBirdDTO>().ReverseMap();
+            CreateMap<Bird, PutBirdDTO>().ReverseMap();
             CreateMap<Sighting, GetSightingDTO>().ReverseMap();
+            CreateMap<Sighting, PostSightingDTO>().ReverseMap();
+            CreateMap<Sighting, PutSightingDTO>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RareBirdsApi.Data.Models;
 using RareBirdsApi.Models.Configurations;
 
 namespace RareBirdsApi.Models

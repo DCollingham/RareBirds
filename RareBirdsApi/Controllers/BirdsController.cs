@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RareBirdsApi.Data.Models;
 using RareBirdsApi.Models;
 using RareBirdsApi.Models.DTOs;
 
@@ -26,34 +27,32 @@ namespace RareBirdsApi.Controllers
 
         // GET: api/Birds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GETBirdsDTO>>> GetBirds()
+        public async Task<ActionResult<IEnumerable<GetBirdsDTO>>> GetBirds()
         {
           if (_context.Birds == null)
           {
               return NotFound();
           }
            var birds = await _context.Birds.ToListAsync();
-           return _mapper.Map<List<GETBirdsDTO>>(birds);
-
+           return _mapper.Map<List<GetBirdsDTO>>(birds);
         }
 
         // GET: api/Birds/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GETBirdDetailsDTO>> GetBird(int id)
+        public async Task<ActionResult<GetBirdDTO>> GetBird(int id)
         {
           if (_context.Birds == null)
           {
               return NotFound();
           }
-            var bird = await _context.Birds.Include(q => q.Sightings)
-                .FirstOrDefaultAsync(q => q.Id == id);
+            var bird = await _context.Birds.FindAsync(id);
 
 
             if (bird == null)
             {
                 return NotFound();
             }
-            var BirdDTO = _mapper.Map<GETBirdDetailsDTO>(bird);
+            var BirdDTO = _mapper.Map<GetBirdDTO>(bird);
             return BirdDTO;
         }
 
@@ -75,13 +74,14 @@ namespace RareBirdsApi.Controllers
         // PUT: api/Birds/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBird(int id, Bird bird)
+        public async Task<IActionResult> PutBird(int id, PutBirdDTO birdDTO)
         {
-            if (id != bird.Id)
+            if (id != birdDTO.Id)
             {
                 return BadRequest();
             }
 
+            var bird = _mapper.Map<Bird>(birdDTO);
             _context.Entry(bird).State = EntityState.Modified;
 
             try
@@ -104,17 +104,16 @@ namespace RareBirdsApi.Controllers
         }
 
         // POST: api/Birds
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Bird>> PostBird(Bird bird)
+        public async Task<ActionResult<PostBirdDTO>> PostBird(PostBirdDTO birdDTO)
         {
           if (_context.Birds == null)
           {
               return Problem("Entity set 'RareBirdsDbContext.Birds'  is null.");
           }
+            var bird = _mapper.Map<Bird>(birdDTO);
             _context.Birds.Add(bird);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetBird", new { id = bird.Id }, bird);
         }
 

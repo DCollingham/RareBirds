@@ -1,6 +1,6 @@
 ﻿namespace RareBirdsApi.Models.DTOs
 {
-    public class GETBirdsDTO
+    public class GetBirdDTO
     {
         public int Id { get; set; }
         public string Genus { get; set; }
