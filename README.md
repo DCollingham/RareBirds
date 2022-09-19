@@ -15,3 +15,6 @@ A Personal project to practice and demonstrate skills providing a RESTful API Ba
 - Securing endpoints using Identity & JWTs
 - Implementation of Repository pattern
 - Unit Testing
+
+#### API Documentation
+https://dcollingham.github.io/DCollingham-RareBirds/
