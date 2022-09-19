@@ -6,9 +6,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RareBirdsApi.Data.Models;
+using RareBirdsApi.Data.Birds;
+using RareBirdsApi.Enums;
 using RareBirdsApi.Models;
-using RareBirdsApi.Models.DTOs;
 
 namespace RareBirdsApi.Controllers
 {
@@ -56,9 +56,9 @@ namespace RareBirdsApi.Controllers
             return BirdDTO;
         }
 
-        // GET: api/Birds/genus/Perdix
-        [HttpGet("genus/{genus}")]
-        public async Task<ActionResult<IEnumerable<Bird>>> GetBirdByGenus(string genus)
+        // GET: api/Birds/rarity/red
+        [HttpGet("rarity/{rarity}")]
+        public async Task<ActionResult<IEnumerable<Bird>>> GetBirdByGenus(Rarity rarity)
         {
             
             if (_context.Birds == null)
@@ -66,7 +66,7 @@ namespace RareBirdsApi.Controllers
                 return NotFound();
             }
             var birds = await _context.Birds
-                .Where(q => q.Genus.Contains(genus))
+                .Where(q => q.Rarity == rarity)
                 .ToListAsync();
             return birds;       
         }

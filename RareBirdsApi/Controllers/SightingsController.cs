@@ -6,9 +6,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RareBirdsApi.Data.Models;
+using RareBirdsApi.Data.Birds;
+using RareBirdsApi.Data.Sightings;
 using RareBirdsApi.Models;
-using RareBirdsApi.Models.DTOs;
 
 namespace RareBirdsApi.Controllers
 {
@@ -27,9 +27,11 @@ namespace RareBirdsApi.Controllers
 
         // GET: api/Sightings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sighting>>> GetSightings()
+        public async Task<ActionResult<IEnumerable<GetSightingDTO>>> GetSightings()
         {
-            return await _context.Sightings.ToListAsync();
+            var sightings = await _context.Sightings.ToListAsync();
+            var sightingDTO = _mapper.Map<List<GetSightingDTO>>(sightings);
+            return Ok(sightingDTO); 
         }
 
 
@@ -43,7 +45,6 @@ namespace RareBirdsApi.Controllers
             }
             var bird = await _context.Birds.Include(q => q.Sightings)
                 .FirstOrDefaultAsync(q => q.Id == id);
-
 
             if (bird == null)
             {
@@ -80,7 +81,6 @@ namespace RareBirdsApi.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -92,8 +92,7 @@ namespace RareBirdsApi.Controllers
             var sighting = _mapper.Map<Sighting>(sightingDTO);
             _context.Sightings.Add(sighting);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSighting", new { id = sighting.Id }, sighting);
+            return CreatedAtAction("PostSighting", new { id = sighting.Id }, sighting);
         }
 
         // DELETE: api/Sightings/5
@@ -105,10 +104,8 @@ namespace RareBirdsApi.Controllers
             {
                 return NotFound();
             }
-
             _context.Sightings.Remove(sighting);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

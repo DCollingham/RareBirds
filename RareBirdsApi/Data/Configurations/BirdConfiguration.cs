@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RareBirdsApi.Data.Models;
-
+using RareBirdsApi.Data.Birds;
+using RareBirdsApi.Enums;
 namespace RareBirdsApi.Models.Configurations
 {
     public class BirdConfiguration : IEntityTypeConfiguration<Bird>

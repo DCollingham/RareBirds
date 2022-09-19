@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RareBirdsApi.Models.DTOs
+namespace RareBirdsApi.Data.Sightings
 {
-    public class PostSightingDTO
+    public abstract class BaseSighting
     {
         [Required]
         [DataType(DataType.Date)]
@@ -11,6 +10,5 @@ namespace RareBirdsApi.Models.DTOs
         public DateTime DateSighted { get; set; }
         public double Longditude { get; set; }
         public double Latitude { get; set; }
-        public int BirdId { get; set; }
     }
 }

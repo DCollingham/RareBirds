@@ -1,17 +1,19 @@
 ﻿using RareBirdsApi.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RareBirdsApi.Data.Models
+namespace RareBirdsApi.Data.Birds
 {
-    public class Bird
+    public abstract class BaseBird
     {
-        public int Id { get; set; }
-        public string NickName { get; set; }
+        [Required]
+        [StringLength(75)]
         public string Genus { get; set; }
+        [Required]
+        [StringLength(75)]
         public string Species { get; set; }
-
+        [Required]
         [Column(TypeName = "nvarchar(24)")]
         public Rarity Rarity { get; set; }
-        public virtual IList<Sighting> Sightings { get; set; }
     }
 }
