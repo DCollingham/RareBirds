@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RareBirdsApi.Configs;
 using RareBirdsApi.Models;
@@ -18,6 +19,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<RareBirdsDbContext>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
